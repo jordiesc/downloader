@@ -1,7 +1,8 @@
-import widget
 import tkinter
 import queue as qu
-
+from widget import Widget
+from widget import Message
+from worker import Worker
 
 window = tkinter.Tk()
 # to rename the title of the window
@@ -10,9 +11,11 @@ window.title("GUI")
 label = tkinter.Label(window, text = "window downloader").pack()
 
 cola = qu.Queue()
-cola.put("menaje en la cola")
 
-frame = widget.Widget(window,cola).pack()
+Worker(cola).run()
+
+
+frame = Widget(window,cola).pack()
 
 
 window.mainloop()
