@@ -19,8 +19,9 @@ class Widget(tk.Frame):
             self.parent = parent
             self.widgets()
             self.cola =cola
-            self.parent.after(1000,self.worker)
+            self.parent.after(100,self.worker)
             self.parent.configure(background='black')
+            self.parent.protocol("WM_DELETE_WINDOW", self.closewidget)
             
         def widgets(self):
             self.text = st.ScrolledText(self, width=50, height=10)
@@ -36,7 +37,8 @@ class Widget(tk.Frame):
 
         def worker(self):
             self.text.insert(tk.END,"nueva al final")
-            tread = th.Thread(target=self.polling,args=(self.cola,))
+            #Daemon make destroy the threads when main trhead ends
+            tread = th.Thread(target=self.polling,args=(self.cola,),daemon=True)
             tread.start()
             
         def polling(self,cola:qu.Queue):
@@ -47,7 +49,8 @@ class Widget(tk.Frame):
                self.text.insert(tk.END,message.messege)
                last_message = message.lastmessage
                cola.task_done()
-
+            self.closewidget()
         
-
-
+        def closewidget(self):
+            print("en destoy")
+            self.parent.destroy()

@@ -12,11 +12,10 @@ label = tkinter.Label(window, text = "window downloader").pack()
 
 cola = qu.Queue()
 
-Worker(cola).run()
-
-
 frame = Widget(window,cola).pack()
 
 
+
+Worker(cola).start()
 window.mainloop()
 
